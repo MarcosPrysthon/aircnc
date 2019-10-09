@@ -2,12 +2,14 @@ const User = require('../models/User');
 
 module.exports = {
    async store(req, res){
+       let fb = "existe o usuario"
        //pegando o email do body da requisiçao
        let { email } = req.body;
        //vendo se ja existe um user com o email
        let user = await User.findOne({ email });
        //criando o usuario se ja nao existe
        if(!user){
+           fb = "nao existe o usuario"
            user = await User.create({ email });
        }
        
