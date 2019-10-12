@@ -1,5 +1,6 @@
 const Spot = require('../models/Spot');
 const User = require('../models/User');
+const errors = require('../err/ThrowEx');
  
 //pegando todas as infos para criação 
 //do spot, criando e retornando o spot
@@ -23,8 +24,14 @@ module.exports = {
 
         //verificando se o usuario existe do db
         const user = await User.findById(user_id);
-        if(!user){
-            return res.status(400).json({ err: "user does not exist" });
+        const eSpot = await Spot.findOne({ company });
+        if(eSpot){
+            comp_id = eSpot.user;
+            if(comp_id == user_id){
+                return errors.existentSpotInUserE(req, res);
+            }
+        } else if(!user){
+            return errors.nonexistentUserE(req, res);
         }
 
         const spot = await Spot.create({
@@ -34,8 +41,10 @@ module.exports = {
             price,
             //transformando string pra array e tirando os espaços 
             techs: techs.split(',').map(tech => tech.trim())
-        })      
-                
+        })
+        
+       
         return res.json(spot);
+        
     }
 };

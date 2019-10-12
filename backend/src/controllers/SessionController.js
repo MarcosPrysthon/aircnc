@@ -1,20 +1,32 @@
 const User = require('../models/User');
+const errors = require('../err/ThrowEx');
 
 module.exports = {
-   async store(req, res){
-       let fb = "existe o usuario"
-       //pegando o email do body da requisiçao
-       let { email } = req.body;
-       //vendo se ja existe um user com o email
-       let user = await User.findOne({ email });
-       //criando o usuario se ja nao existe
-       if(!user){
-           fb = "nao existe o usuario"
-           user = await User.create({ email });
-       }
+    
+    async index(req, res){
+        const { email } = req.body;
+        let user = await User.findOne({ email });
+        
+        if(!user){
+            return errors.nonexistentUserE(req, res);
+        }
+
+        return res.json(user);
+    },
+
+    async store(req, res){
+
+        let { email } = req.body;
+        let user = await User.findOne({ email });
        
-       //retornando o objeto do usuario
-       return res.json(user);
+        if(!user){
+            user = await User.create({ email });
+        } else{
+            errors.existingUserE(req, res);
+        }
+       
+        //retornando o objeto do usuario
+        return res.json(user);
     }
 
 };

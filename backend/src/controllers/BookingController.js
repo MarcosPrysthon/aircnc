@@ -15,6 +15,9 @@ module.exports = {
             date
         });
 
+        //trazendo todas infos sobre spot e user, nao so o id 
+        await booking.populate('spot').populate('user').execPopulate();
+
         return res.json(booking);
     }
 }
