@@ -22,7 +22,7 @@ module.exports = {
         if(!user){
             user = await User.create({ email });
         } else{
-            errors.existingUserE(req, res);
+            errors.existentUserE(req, res);
         }
        
         //retornando o objeto do usuario
