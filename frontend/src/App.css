@@ -86,5 +86,7 @@ body, input, button {
 }
 
 .content button.btn:hover{
-  background: #e14f50;
+  background: #e2dfdf;
+  color: #f05a5d;
+  transition: 0.5s;
 }

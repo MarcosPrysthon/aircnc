@@ -1,4 +1,4 @@
-//lendo o formato da requisição com o multer
+//lendo o formato multpart/form da requisição com o multer
 
 const multer = require('multer');
 const path = require('path');

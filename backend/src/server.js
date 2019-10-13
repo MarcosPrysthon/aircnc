@@ -1,9 +1,7 @@
-//importando o express para a api
 const express = require('express');
-//importando o mongoose
 const mongoose = require('mongoose'); 
-//importanto as rotas do backend
 const routes = require('./routes');
+const cors = require('cors');
 
 //criação da aplicação
 const app = express();
@@ -14,6 +12,7 @@ mongoose.connect('mongodb+srv://prysthon1:marcosvinicius1@cluster0-knlvz.mongodb
     useUnifiedTopology: true
 }) 
 
+app.use(cors());
 //lendo requisiçoes post como json
 app.use(express.json());
 app.use(routes)
