@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import './styles.css';
 
-export default function Dashboard(){
+export default function Dashboard({ history }){
     const [spots, setSpots] = useState([]);
 
+
+    function handleClick() {
+        history.push('/new');
+    }
 
     /* fazendo listagem dos spots de um usuario*/
     /* funçao useEffect é responsavel por fazer o load
@@ -39,9 +42,10 @@ export default function Dashboard(){
                 ))}
             </ul>
 
-            <Link to="/new">
-                  <button className="btn">Cadastrar novo spot</button>  
-            </Link>
+           <button 
+            className="btn"
+            onClick={handleClick}
+            >Cadastrar novo spot</button>
         </>
     );
 }
