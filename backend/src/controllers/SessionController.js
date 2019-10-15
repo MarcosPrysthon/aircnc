@@ -21,9 +21,7 @@ module.exports = {
        
         if(!user){
             user = await User.create({ email });
-        } else{
-            errors.existentUserE(req, res);
-        }
+        } 
        
         //retornando o objeto do usuario
         return res.json(user);

@@ -25,12 +25,7 @@ module.exports = {
         //verificando se o usuario existe do db
         const user = await User.findById(user_id);
         const eSpot = await Spot.findOne({ company });
-        if(eSpot){
-            comp_id = eSpot.user;
-            if(comp_id == user_id){
-                return errors.existentSpotInUserE(req, res);
-            }
-        } else if(!user){
+        if(!user){
             return errors.nonexistentUserE(req, res);
         }
 

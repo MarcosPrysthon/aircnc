@@ -13,6 +13,16 @@ const SpotSchema = new mongoose.Schema({
         //modulo do usuario
         ref: "User"
     }
+}, {
+    toJSON: {
+        virtuals: true,
+    }
+});
+
+//jogando a url da imagem para o res da req
+SpotSchema.virtual('thumbnail_url').get(function(){
+    return `http://localhost:3333/files/${this.thumbnail}`
+
 });
 
 module.exports = mongoose.model('Spot', SpotSchema);
