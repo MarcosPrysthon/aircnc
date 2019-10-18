@@ -1,14 +1,37 @@
-import React from 'react';
-import { View, Platform, KeyboardAvoidingView, StyleSheet,TouchableOpacity, TextInput, Image, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, AsyncStorage, Platform, KeyboardAvoidingView, StyleSheet,TouchableOpacity, TextInput, Image, Text } from 'react-native';
 
 import api from '../services/api';
  
 import logo from '../../assets/logo.png';
 
-export default function Login(){
+export default function Login({ navigation }){
 
+    const [email, setEmail] = useState('');
+    const [techs, setTechs] = useState('');
+
+    /* verificando se o usuario ja esta logado,
+    se sim, manda direto para a pagina de lista
+    de spost */
+    useEffect(() => {
+        AsyncStorage.getItem('user').then(user => {
+            if (user)  navigation.navigate('List');
+        })
+    }, []);
+
+    /* fazendo a api call quando logar, guardando
+    o id do usuario logado e suas tecnologias de 
+    interesse e navegando para a pagina de listas
+    de spots */
     async function handleSubmit(){
-        
+        const response = await api.post('/sessions', { email });
+
+        const { _id } = response.data;
+
+        await AsyncStorage.setItem('user', _id);
+        await AsyncStorage.setItem('techs', techs);
+
+        navigation.navigate('List');
     }
 
     return (
@@ -18,6 +41,8 @@ export default function Login(){
             <View style={styles.form}>
                 <Text style={styles.label}>EMAIL *</Text>
                 <TextInput 
+                    value={email}
+                    onChangeText={text => setEmail(text)}
                     style={styles.input}
                     placeholder="exemplo@gmail.com"
                     placeholderTextColor="#999"
@@ -28,6 +53,8 @@ export default function Login(){
 
                 <Text style={styles.label}>TECNOLOGIAS *</Text>
                 <TextInput 
+                    value={techs}
+                    onChangeText={text => setTechs(text)}
                     style={styles.input}
                     placeholder="Tecnlogias"
                     placeholderTextColor="#999"
@@ -35,7 +62,7 @@ export default function Login(){
                     autoCorrect={false}
                 />
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                     <Text style={styles.buttonText}>Encontrar spots</Text>
                 </TouchableOpacity>
             </View>
@@ -43,6 +70,7 @@ export default function Login(){
     );
 }
 
+/* parte de css no react native*/
 const styles = StyleSheet.create({
     container: {
         flex: 1,
